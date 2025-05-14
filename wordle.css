@@ -1,0 +1,40 @@
+main {
+  margin: 30px;
+}
+
+.board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board div {
+  /* baord 아래 div */
+  margin: 5px;
+}
+
+.block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #d3d6da;
+  width: 60px;
+  height: 60px;
+}
+
+.keyboard {
+  /* <div> : 각 div 세로정렬이 default -> div 아래 각 키만 가로 정렬 필요 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.keyboard div {
+  /* keyboard 아래 div */
+  border: 1px solid #d3d6da;
+  display: inline-block;
+  padding: 10px 15px 10px 15px;
+  margin: 5px;
+}
