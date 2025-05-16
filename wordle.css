@@ -1,4 +1,4 @@
-main {
+.main {
   margin: 30px;
 }
 
@@ -6,6 +6,10 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#timer {
+  justify-self: center;
 }
 
 .board div {

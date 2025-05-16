@@ -17,6 +17,8 @@ let index = 0; // 블xxxxxx럭의 인덱스 번호 (0~4까지 입력)
 let attempts = 0; //attempts는 줄(row) : 단어를 몇 줄 입력했는가 (몇 번째 줄인가)
 //index : 해당 줄에서 몇 번째 칸
 
+let timer;
+
 function appStart() {
   const nextLine = () => {
     if (attempts === 6) return gameover(); //6줄 까지 시도 가능 -> attemps = 6 : 7번째 -> nextLine X
@@ -35,6 +37,7 @@ function appStart() {
   const gameover = () => {
     window.removeEventListener("keydown", handleKeyDown); //게임 종료 시 키보드 입력 X
     displayGameover();
+    clearInterval(timer);
   };
 
   const handleEnterKey = () => {
@@ -66,6 +69,18 @@ function appStart() {
     else nextLine();
   };
 
+  const handleBackspace = () => {
+    if (index > 0) {
+      // index 가 0보다 클 때
+      const preBlock = document.querySelector(
+        `.block[data-index='${attempts}${index - 1}']`
+      ); //앞 전 블럭 선택
+      preBlock.innerText = ""; //내용삭제
+    }
+
+    if (index !== 0) index -= 1; // index 줄이기
+  };
+
   const handleKeyDown = (event) => {
     /* event(e) 가 addEventListner 아래 handleKeyDown 함수에 전달 */
     const key = event.key.toUpperCase(); // 눌린 키
@@ -81,12 +96,16 @@ function appStart() {
     );
 
     // index 가 5일 때만 입력
-
     /*     if (index === 5) {
       if (event.key === "Enter") handleEnterKey(); // 5번째 Enter 키 입력 ->
       else return;
     }
  */
+
+    if (event.key === "Backspace") handleBackspace();
+
+    //Backspace 눌렀을 떄 다른 동작 일어나지 않도록
+
     if (event.key === "Enter") {
       //key: Enter -> 문자열 표시
 
@@ -94,7 +113,6 @@ function appStart() {
         // 5칸을 채우지 않고 Enter -> 아무 결과 X
         return;
       }
-
       handleEnterKey(); // 5개 다 입력했을 때만 실행
     } else if (index === 5) {
       // 몇 번째 칸인지 추적(6번째)
@@ -109,6 +127,30 @@ function appStart() {
   window.addEventListener("keydown", handleKeyDown);
   //키보드를 누르면(keydown), handleKeyDown() 함수를 실행
   //"keydown" : 웹 브라우저에서 내장된 표준 이벤트 이름
+
+  const starTimer = () => {
+    const 시작_시간 = new Date(); // 시작 시간
+
+    function setTime() {
+      const 현재_시간 = new Date();
+      const 경과_시간 = new Date(현재_시간 - 시작_시간); // 경과 시간 (밀리초 단위)
+
+      const 분 = 경과_시간.getMinutes().toString(); // 분 -> toString : 문자열로 변환
+      const 초 = 경과_시간.getSeconds().toString(); // 초
+
+      const timerDiv = document.querySelector("#timer"); // id가 time인 요소 선택, (class 인 경우 . 으로 호출)
+      timerDiv.innerText = `${분.padStart(2, "0")}:${초.padStart(2, "0")}`;
+      // `${변수}` -> 변수 숫자로 인식  // "" -> 문자열로 인식
+    }
+
+    //정답 맞추면 타이머 멈춤
+
+    timer = setInterval(setTime, 1000); // 1초마다 setTime 함수 호출
+    //setInterval 의 아이디?
+  };
+
+  starTimer();
+  window.addEventListener("keydown", handleKeyDown);
 }
 
 appStart();
